@@ -1,7 +1,5 @@
 <img src="https://cdn.arbatov.dev/0bTb5NZmT68yMPrQKyo8YaVkUnch29JlZTdgjjsmI91pn1Zes0LsseSaDnLnfz5muNpZuDBXYIVmQ7bG4LcxrDFcFCYYQiEjQYdx.png" width="400"  alt="Detecto">
 
-# <img src="https://cdn.arbatov.dev/0bTb5NZmT68yMPrQKyo8YaVkUnch29JlZTdgjjsmI91pn1Zes0LsseSaDnLnfz5muNpZuDBXYIVmQ7bG4LcxrDFcFCYYQiEjQYdx.png" width="400"  alt="Detecto">
-
 ## Introduction
 
 **Detecto is a React library designed to help developers automatically detect when a user's browser is experiencing performance issues such as throttling or lag**. When performance issues are detected, the application can adapt to provide a smoother, more lightweight experience for the user.
