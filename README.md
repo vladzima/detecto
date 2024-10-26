@@ -22,7 +22,7 @@ Whether you're building a highly interactive web application or an e-commerce si
 1. Install library with `npm i react-pd` or `yarn add react-pd`
 2. Use the `PerformanceProvider` and `usePerformance` Hook in your app
 
-### Example:
+Example:
 ```tsx
 import React from 'react';
 import { PerformanceProvider, usePerformance } from 'react-performance-detector';
@@ -44,7 +44,7 @@ const MyComponent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <PerformanceProvider>
-      // Wrap your components with the PerformanceProvider to enable performance monitoring throughout the app or a specific section of it
+      {/* Wrap your components with the PerformanceProvider to enable performance monitoring throughout the app or a specific section of it */}
       <MyComponent />
     </PerformanceProvider>
   );
