@@ -1,10 +1,10 @@
-# react-performance-detector
+<img src="https://cdn.arbatov.dev/0bTb5NZmT68yMPrQKyo8YaVkUnch29JlZTdgjjsmI91pn1Zes0LsseSaDnLnfz5muNpZuDBXYIVmQ7bG4LcxrDFcFCYYQiEjQYdx.png" width="400"  alt="Detecto">
 
 ### Introduction
 
-**`react-pd`** is a React library designed to help developers automatically detect when a user's browser is experiencing performance issues such as throttling or lag. When performance issues are detected, the application can adapt to provide a smoother, more lightweight experience for the user.
+**Detecto** is a React library designed to help developers automatically detect when a user's browser is experiencing performance issues such as throttling or lag. When performance issues are detected, the application can adapt to provide a smoother, more lightweight experience for the user.
 
-Modern websites often feature rich animations, high-resolution images, and interactive elements that can be resource-intensive, especially on older or low-powered devices. By using `react-pd`, you can detect when the user's browsing environment is struggling and adjust your UI dynamically to keep the user experience optimal, even under less-than-ideal conditions.
+Modern websites often feature rich animations, high-resolution images, and interactive elements that can be resource-intensive, especially on older or low-powered devices. By using Detecto, you can detect when the user's browsing environment is struggling and adjust your UI dynamically to keep the user experience optimal, even under less-than-ideal conditions.
 
 ### Key Features
 
@@ -14,18 +14,18 @@ Modern websites often feature rich animations, high-resolution images, and inter
 - **React Hooks**: Provides easy integration through a `usePerformance` hook to access lagging status wherever you need in your application.
 - **Fallback Handling**: You can optionally define custom behavior when the environment does not support performance detection features.
 
-Whether you're building a highly interactive web application or an e-commerce site, `react-pd` ensures your users enjoy the best experience, regardless of their hardware capabilities or the conditions under which they browse.
+Whether you're building a highly interactive web application or an e-commerce site, Detecto ensures your users enjoy the best experience, regardless of their hardware capabilities or the conditions under which they browse.
 
 
 ## Quickstart: Basic Usage
 
-1. Install library with `npm i react-pd` or `yarn add react-pd`
+1. Install library with `npm i detecto` or `yarn add detecto`
 2. Use the `PerformanceProvider` and `usePerformance` Hook in your app
 
 Example:
 ```tsx
 import React from 'react';
-import { PerformanceProvider, usePerformance } from 'react-performance-detector';
+import { PerformanceProvider, usePerformance } from 'detecto';
 
 const MyComponent: React.FC = () => {
   const isLagging = usePerformance(); // Use the usePerformance hook within any child component to get a boolean (isLagging) indicating whether the user is experiencing performance issues
@@ -54,7 +54,7 @@ export default App;
 ```
 
 ### Default Behavior
-With the default configuration, the `react-pd` library will:
+With the default configuration, the Detecto library will:
 - Detect low frame rates (`fpsThreshold` of 20).
 - Monitor for long tasks exceeding 50ms.
 - Check performance every second (`checkInterval` of 1000ms).
@@ -77,7 +77,7 @@ If your target audience includes older browsers, you can:
 
 ```tsx
 import React from "react";
-import { usePerformanceStatus, ThrottleDetectionConfig } from "react-pd";
+import { usePerformanceStatus, ThrottleDetectionConfig } from "detecto";
 
 const MyComponent: React.FC = () => {
   const config: ThrottleDetectionConfig = {

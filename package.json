@@ -38,16 +38,17 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-pd",
+  "name": "detecto",
   "author": "Vlad Arbatov",
-  "module": "dist/react-pd.esm.js",
+  "description": "A React library to detect and adapt to user performance issues, such as lag or throttling, ensuring a smoother user experience.",
+  "module": "dist/detecto.esm.js",
   "size-limit": [
     {
-      "path": "dist/react-pd.cjs.production.min.js",
+      "path": "dist/detecto.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/react-pd.esm.js",
+      "path": "dist/detecto.esm.js",
       "limit": "10 KB"
     }
   ],
