@@ -4,7 +4,7 @@
 
 **Detecto is a React library designed to help developers automatically detect when a user's browser is experiencing performance issues such as throttling or lag**. When performance issues are detected, the application can adapt to provide a smoother, more lightweight experience for the user.
 
-Modern websites often feature rich animations, high-resolution images, and interactive elements that can be resource-intensive, especially on older or low-powered devices. By using Detecto, you can detect when the user's browsing environment is struggling and adjust your UI dynamically to keep the user experience optimal, even under less-than-ideal conditions.
+Modern websites often feature rich animations, high-resolution images, and interactive elements that can be resource-intensive, especially on older or low-powered devices. By using Detecto, you can *detect* when the user's browsing environment is struggling and adjust your UI dynamically to keep the user experience optimal, even under less-than-ideal conditions.
 
 ## Key Features
 

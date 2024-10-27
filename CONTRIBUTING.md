@@ -21,28 +21,25 @@ First of all, thank you for taking the time to contribute! 🎉
 ## Development Workflow
 
 1. Make your changes in the new branch.
-2. **Test** your changes before submitting a PR:
-   ```bash
-   npm run test
-   ```
-3. Run **linting** to ensure code style:
+
+2. Run **linting** to ensure code style:
    ```bash
    npm run lint
    ```
 
-4. Once you're done, **commit** your changes using Commitizen:
+3. Once you're done, **commit** your changes using Commitizen:
    ```bash
    git add .
    npm run commit
    ```
    - We use [Commitizen](https://github.com/commitizen/cz-cli) to ensure consistent commit messages. Follow the prompts to create a meaningful commit message.
 
-5. **Push** your branch to GitHub:
+4. **Push** your branch to GitHub:
    ```bash
    git push origin feature/your-feature-name
    ```
 
-6. **Create a Pull Request** (PR) on GitHub:
+5. **Create a Pull Request** (PR) on GitHub:
    - Include a detailed description of your changes.
    - Reference related issues if applicable.
 
