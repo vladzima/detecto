@@ -8,8 +8,11 @@ Modern websites often feature rich animations, high-resolution images, and inter
 
 ## Key Features
 
+- **Lightweight**: Detecto is only ~850B, making it easy to integrate into your project.
 - **Frame Rate Monitoring**: Track frame rate (FPS) to identify if the user's device is struggling to keep up with animations or other tasks.
 - **Long Task Detection**: Use the `PerformanceObserver` API to monitor long-running tasks that could affect responsiveness.
+- **Initial Sampling Period**: Average frame rates over an initial period (default is 5 seconds) to avoid false positives during the initial page load.
+- **Page Visibility Handling**: Detecto pauses performance monitoring when the page is inactive to prevent misleading metrics such as `NaN` for FPS when the tab is not visible.
 - **Customizable Parameters**: Easily adjust detection thresholds to suit your specific needs or let the library use its defaults.
 - **React Hooks**: Provides easy integration through a `usePerformance` hook to access lagging status wherever you need in your application.
 - **Fallback Handling**: You can optionally define custom behavior when the environment does not support performance detection features.
@@ -18,10 +21,14 @@ Whether you're building a highly interactive web application or an e-commerce si
 
 ## Quickstart: Basic Usage
 
-1. Install the library with `npm i detecto` or `yarn add detecto`.
+1. Install the library:
+   ```bash
+   npm i detecto
+   ```
+
 2. Use the `PerformanceProvider` and `usePerformance` Hook in your app.
 
-Example:
+Example (`.tsx`):
 
 ```tsx
 import React from 'react';
@@ -58,6 +65,8 @@ With the default configuration, the Detecto library will:
 - Detect low frame rates (`fpsThreshold` of 20).
 - Monitor for long tasks exceeding 50ms.
 - Check performance every second (`checkInterval` of 1000ms).
+- Average FPS over an initial sampling period of 5 seconds (`initialSamplingDuration` of 5000ms) to prevent false positives during initial page load.
+- Pause performance monitoring when the page is inactive to prevent misleading metrics.
 
 ## Browser Requirements
 This library uses `PerformanceObserver` to detect performance issues in the browser. Please note the following:
@@ -79,9 +88,10 @@ import { usePerformanceStatus, ThrottleDetectionConfig } from "detecto";
 
 const MyComponent: React.FC = () => {
   const config: ThrottleDetectionConfig = {
-    fpsThreshold: 20,
-    longTaskThreshold: 50,
-    checkInterval: 1000,
+    fpsThreshold: 20, // Adjust the FPS threshold to determine when lagging is detected
+    longTaskThreshold: 50, // Adjust the threshold for long tasks (in milliseconds)
+    checkInterval: 1000, // Adjust the interval (in milliseconds) to check for performance issues
+    initialSamplingDuration: 5000, // Adjust the initial sampling duration if needed
     onFeatureNotAvailable: () => {
       console.warn("Performance features are not available, running fallback behavior...");
       // Here you could disable some animations, show a fallback UI, etc.
