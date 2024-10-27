@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export interface ThrottleDetectionConfig {
   fpsThreshold?: number; // e.g., below 20 FPS
   longTaskThreshold?: number; // e.g., tasks longer than 50ms
   checkInterval?: number; // Interval to check for lag (e.g., every 1 second)
   initialSamplingDuration?: number; // Time period for extended initial sampling (in milliseconds)
+  lagRecoveryDelay?: number; // Cooldown for switching back from lagging state
+  autoRecover?: boolean; // Option to control if lagging state should auto-recover
   onFeatureNotAvailable?: () => void; // Callback if a required feature is not available
 }
 
@@ -13,14 +15,15 @@ const defaultConfig: ThrottleDetectionConfig = {
   longTaskThreshold: 50,
   checkInterval: 1000,
   initialSamplingDuration: 5000,
+  lagRecoveryDelay: 3000,
+  autoRecover: true,
 };
 
 export function usePerformanceStatus(config?: ThrottleDetectionConfig) {
   const [isLagging, setIsLagging] = useState(false);
   const effectiveConfig = { ...defaultConfig, ...config };
 
-  let lastLogTime = 0;
-  let pageVisible = true;
+  let lastLaggingTime = 0;
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -55,19 +58,8 @@ export function usePerformanceStatus(config?: ThrottleDetectionConfig) {
       initialSamplingComplete = true;
     }, effectiveConfig.initialSamplingDuration);
 
-    // Handle page visibility change
-    function handleVisibilityChange() {
-      pageVisible = !document.hidden;
-      if (!pageVisible) {
-        // Clear FPS samples when page becomes hidden to avoid calculating NaN
-        fpsSamples = [];
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
     function trackFrameRate() {
-      if (!pageVisible) {
+      if (document.hidden) {
         return;
       }
 
@@ -80,8 +72,8 @@ export function usePerformanceStatus(config?: ThrottleDetectionConfig) {
     }
 
     function checkPerformance() {
-      if (!pageVisible || fpsSamples.length === 0) {
-        // If page is not visible or no frames were sampled, skip calculation
+      if (fpsSamples.length === 0) {
+        // No frames were sampled, possibly due to inactivity.
         return;
       }
 
@@ -89,17 +81,23 @@ export function usePerformanceStatus(config?: ThrottleDetectionConfig) {
         fpsSamples.reduce((a, b) => a + b, 0) / fpsSamples.length;
 
       if (initialSamplingComplete) {
+        const now = Date.now();
+
         if (averageFPS < effectiveConfig.fpsThreshold!) {
           setIsLagging(true);
-        } else {
+          lastLaggingTime = now;
+        } else if (
+          effectiveConfig.autoRecover &&
+          isLagging &&
+          now - lastLaggingTime > effectiveConfig.lagRecoveryDelay!
+        ) {
           setIsLagging(false);
         }
       }
 
-      // Log key metrics in development environment at meaningful intervals
       if (process.env.NODE_ENV === 'development') {
         const currentTime = Date.now();
-        if (currentTime - lastLogTime > 10000) {
+        if (currentTime - lastLaggingTime > 10000) {
           // Log every 10 seconds
           if (!isNaN(averageFPS)) {
             console.log(`Average FPS: ${averageFPS.toFixed(2)}`);
@@ -111,16 +109,15 @@ export function usePerformanceStatus(config?: ThrottleDetectionConfig) {
               'No frames rendered during this interval (page possibly idle).'
             );
           }
-          lastLogTime = currentTime;
+          lastLaggingTime = currentTime;
         }
       }
 
-      // Reset FPS samples for the next interval
       fpsSamples = [];
     }
 
     const observer = new PerformanceObserver(list => {
-      if (!pageVisible) {
+      if (document.hidden) {
         return;
       }
 
@@ -131,7 +128,6 @@ export function usePerformanceStatus(config?: ThrottleDetectionConfig) {
         ) {
           setIsLagging(true);
 
-          // Log long task in development environment
           if (process.env.NODE_ENV === 'development') {
             console.warn(`Long task detected: ${entry.duration.toFixed(2)}ms`);
           }
@@ -159,9 +155,12 @@ export function usePerformanceStatus(config?: ThrottleDetectionConfig) {
       clearInterval(frameInterval);
       clearInterval(checkInterval);
       observer.disconnect();
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [config]);
 
-  return isLagging;
+  const resetLagging = useCallback(() => {
+    setIsLagging(false);
+  }, []);
+
+  return { isLagging, resetLagging };
 }

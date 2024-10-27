@@ -4,7 +4,15 @@ import {
   ThrottleDetectionConfig,
 } from './usePerformanceStatus';
 
-const PerformanceContext = createContext<boolean>(false);
+interface PerformanceContextType {
+  isLagging: boolean;
+  resetLagging: () => void;
+}
+
+const PerformanceContext = createContext<PerformanceContextType>({
+  isLagging: false,
+  resetLagging: () => {},
+});
 
 interface PerformanceProviderProps extends React.PropsWithChildren {
   config?: ThrottleDetectionConfig;
@@ -14,9 +22,10 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({
   config,
   children,
 }) => {
-  const isLagging = usePerformanceStatus(config);
+  const performanceStatus = usePerformanceStatus(config);
+
   return (
-    <PerformanceContext.Provider value={isLagging}>
+    <PerformanceContext.Provider value={performanceStatus}>
       {children}
     </PerformanceContext.Provider>
   );
